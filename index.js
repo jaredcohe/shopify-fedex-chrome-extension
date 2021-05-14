@@ -1,7 +1,5 @@
 chrome.browserAction.onClicked.addListener(function(activeTab){
-  // Logs to chrome extension details page
-  console.log("Shopify FedEx Chrome Extension logging BEFORE");
-  console.log('Turning ' + activeTab.url + ' red!');
+  console.log("Shopify FedEx Chrome Extension logging BEFORE"); // Logs to chrome extension details page
 
   // Get the data on click and pass it to the other tab
   chrome.tabs.executeScript(
@@ -11,12 +9,7 @@ chrome.browserAction.onClicked.addListener(function(activeTab){
     var newURL = "https://www.fedex.com/shipping/shipEntryAction.do?method=doEntry&link=1&locale=en_US&urlparams=us&sType=F";
     chrome.tabs.create({ url: newURL, selected: true, active: true },
       function(tab) {
-          // Logs to chrome extension details page
-          console.log("created tab, pass data");
-          console.log(tab);
-          console.log(data);
-          console.log(data[0]);
-          console.log(data[0][6]);
+          console.log("created tab, pass data"); // Logs to chrome extension details page
           fillForm(data);
     });
   });
@@ -25,8 +18,8 @@ chrome.browserAction.onClicked.addListener(function(activeTab){
 // Find the fedex tab and fill the form
 function fillForm(data) {
   chrome.tabs.query({currentWindow: true, url: "*://www.fedex.com/*" }, function(tabs) {
-    // Logs to chrome extension details page
-    console.log(data); console.log(data[0]); console.log(data[0][0]); console.log(tabs); console.log(tabs[0]); console.log(tabs[1]); chrome.tabs.executeScript( tabs[0].id,
+    console.log(data); // Logs to chrome extension details page
+    chrome.tabs.executeScript( tabs[0].id,
       { code: 'console.log("XXX: Log to target chrome console"); console.log("' + data[0][0] + ': Log to target chrome console"); document.getElementById("toData.contactName").value = "' + data[0][0] + ' ' + data[0][1] + '"; document.getElementById("toData.addressLine1").value = "' + data[0][2] + '"; document.getElementById("toData.addressLine2").value = "' + data[0][3] + '"; document.getElementById("toData.city").value = "' + data[0][4] + '"; document.getElementById("toData.stateProvinceCode").value = "' + data[0][5] + '"; document.getElementById("toData.zipPostalCode").value = "' + data[0][6] + '"; document.getElementById("toData.phoneNumber").value = "' + data[0][8] + '";'
       }
     );
